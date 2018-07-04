@@ -1,5 +1,5 @@
 #ifndef FEDERATION_HH
-#define FERERATION_HH
+#define FEDERATION_HH
 
 #include <iostream>
 #include "Warpsystem.hh"
