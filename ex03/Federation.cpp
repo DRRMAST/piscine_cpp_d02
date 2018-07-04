@@ -1,15 +1,16 @@
 #include "Federation.hh"
-
+#include "Borg.hh"
 namespace Federation
 {
 	namespace Starfleet
 	{
+
 		Captain::Captain(std::string name)
 		{
 			this->_name = name;
 			this->_age = -1;
 		}
-    
+
 		Captain::~Captain()
 		{
 		}
@@ -19,7 +20,7 @@ namespace Federation
 			return (this->_name);
 		}
 
-		int Captain::getAge()
+		int	Captain::getAge()
 		{
 			return (this->_age);
 		}
@@ -29,8 +30,8 @@ namespace Federation
 			this->_age = age;
 		}
 
-		//Federation::Starfleet
-		Ship::Ship(int length, int width, std::string name, short maxWarp)
+
+		Ship::Ship(int length, int width, std::string name, short maxWarp, int torpedo)
 		{
 			this->_length = length;
 			this->_width = width;
@@ -40,8 +41,9 @@ namespace Federation
 			this->_location = this->_home;
 			this->_shield = 100;
 			this->_photonTorpedo = torpedo;
-			std::cout << "The ship USS " << this->_name << " has been finished. It is " << this->_length << " m in length and " << this->_width << " m in width.\nIt can go to Warp " << this->_maxWarp << "!" << std::endl;
+			std::cout << "The ship USS " << this->_name << " has been finished. It is " << this->_length << " m in length and " << this->_width << " m in width. It can go to Warp " << this->_maxWarp << "! Weapons are set: " << this->_photonTorpedo << " torpedoes ready." << std::endl;
 		}
+
 		Ship::Ship()
 		{
 			this->_length = 289;
@@ -54,21 +56,21 @@ namespace Federation
 			this->_photonTorpedo = 20;
 			std::cout << "The ship USS Entreprise has been finished. It is 289 m in length and 132 m in width. It can go to Warp 6! Weapons are set: 20 torpedoes ready." << std::endl;
 		}
+
 		Ship::~Ship()
 		{
 		}
-		
 
 		void Ship::setupCore(WarpSystem::Core* ptr)
 		{
 			std::cout << "USS " << this->_name << ": The core is set." << std::endl;
 			this->_core = ptr;
 		}
-    
-    
+
+
 		void Ship::checkCore()
 		{
-			std::cout <<  "USS " << this->_name << ": The core is " << (this->_core->checkReactor()->isStable() ? "stable" : "unstable") << " at the time." << std::endl;
+			std::cout << "USS " << this->_name << ": The core is " << (this->_core->checkReactor()->isStable() ? "stable" : "unstable") << " at the time." << std::endl;
 		}
 
 		void Ship::promote(Captain* captain)
@@ -76,29 +78,32 @@ namespace Federation
 			this->_captain = captain;
 			std::cout << this->_captain->getName() << ": I'm glad to be the captain of the USS " << this->_name << '.' << std::endl;
 		}
+
 		bool Ship::move(int warp, Destination d)
 		{
-			if((warp <= this->_maxWarp)
-				&& (d != this->_location)
-				&& (this->_core->checkReactor()->isStable())
-				)
+			if ((warp <= this->_maxWarp)
+			&& (d != this->_location)
+			&& (this->_core->checkReactor()->isStable())
+			)
 			{
 				this->_location = d;
 				return true;
 			}
 			return false;
 		}
-		bool Ship::move(int warp)
+
+		bool	Ship::move(int warp)
 		{
 			if ((warp <= this->_maxWarp)
 				&& (this->_core->checkReactor()->isStable())
-				)
+			)
 			{
 				this->_location = this->_home;
 				return true;
 			}
 			return false;
 		}
+
 		bool Ship::move(Destination d)
 		{
 			if ((d != this->_location)
@@ -110,17 +115,18 @@ namespace Federation
 			}
 			return (false);
 		}
-    
+
 		bool Ship::move()
 		{
 			if (this->_core->checkReactor()->isStable())
 			{
-				this->_location = this->_home;
-				return (true);
+			this->_location = this->_home;
+			return (true);
 			}
 			return (false);
 		}
-		int Ship::getShield()
+
+		int	Ship::getShield()
 		{
 			return (this->_shield);
 		}
@@ -130,7 +136,7 @@ namespace Federation
 			this->_shield = shield;
 		}
 
-		int	Ship::getTorpedo()
+		int Ship::getTorpedo()
 		{
 			return (this->_photonTorpedo);
 		}
@@ -151,8 +157,8 @@ namespace Federation
 				ship->setShield((ship->getShield() - 50));
 			}
 		}
-		
-		void Ship::fire(int torpedoes, Borg::Ship* ship)
+
+		void	Ship::fire(int torpedoes, Borg::Ship* ship)
 		{
 			if (this->_photonTorpedo <= 0)
 				std::cout << this->_name << ": No more torpedo to fire, " << this->_captain->getName() << " !" << std::endl;
@@ -165,7 +171,7 @@ namespace Federation
 			else
 				std::cout << this->_name << ": No enough torpedoes to fire, " << this->_captain->getName() << " !" << std::endl;
 		}
-		//Federation::Starfleet:Ensign
+
 
 		Ensign::Ensign(std::string name)
 		{
@@ -176,9 +182,10 @@ namespace Federation
 		Ensign::~Ensign()
 		{
 		}
-	}
-	
-	//Federation::Ship
+
+	};
+
+
 	Ship::Ship(int length, int width, std::string name)
 	{
 		this->_length = length;
@@ -193,64 +200,68 @@ namespace Federation
 	Ship::~Ship()
 	{
 	}
-	
+
 	void Ship::setupCore(WarpSystem::Core* ptr)
 	{
 		std::cout << this->_name << ": The core is set." << std::endl;
 		this->_core = ptr;
 	}
-	
+
 	void Ship::checkCore()
 	{
-		std::cout <<  this->_name << ": The core is " << (this->_core->checkReactor()->isStable() ? "stable" : "unstable") << " at the time." << std::endl;
+		std::cout << this->_name << ": The core is " << (this->_core->checkReactor()->isStable() ? "stable" : "unstable") << " at the time." << std::endl;
 	}
-	bool Ship::move(int warp, Destination d)
-		{
-			if((warp <= this->_maxWarp)
-				&& (d != this->_location)
-				&& (this->_core->checkReactor()->isStable())
-				)
-			{
-				this->_location = d;
-				return true;
-			}
-			return false;
-		}
-		bool Ship::move(int warp)
-		{
-			if ((warp <= this->_maxWarp)
-				&& (this->_core->checkReactor()->isStable())
-				)
-			{
-				this->_location = this->_home;
-				return true;
-			}
-			return false;
-		}
-		bool Ship::move(Destination d)
-		{
-			if ((d != this->_location)
-				&& (this->_core->checkReactor()->isStable())
-				)
-			{
-				this->_location = d;
-				return true;
-			}
-			return (false);
-		}
-    
-		bool Ship::move()
-		{
-			if (this->_core->checkReactor()->isStable())
-			{
-				this->_location = this->_home;
-				return (true);
-			}
-			return (false);
-		} 
-		WarpSystem::Core* Ship::getCore()
-		{
-			return (this->_core);
-		}
-}
 
+	bool Ship::move(int warp, Destination d)
+	{
+		if ((warp <= this->_maxWarp)
+			&& (d != this->_location)
+			&& (this->_core->checkReactor()->isStable())
+			)
+		{
+			this->_location = d;
+			return true;
+		}
+	return false;
+	}
+
+	bool Ship::move(int warp)
+	{
+		if ((warp <= this->_maxWarp)
+			&& (this->_core->checkReactor()->isStable())
+			)
+		{
+			this->_location = this->_home;
+			return true;
+		}
+		return false;
+	}
+
+	bool Ship::move(Destination d)
+	{
+		if ((d != this->_location)
+			&& (this->_core->checkReactor()->isStable())
+			)
+		{
+			this->_location = d;
+			return true;
+		}
+		return (false);
+	}
+
+	bool Ship::move()
+	{
+		if (this->_core->checkReactor()->isStable())
+		{
+			this->_location = this->_home;
+			return (true);
+		}
+		return (false);
+	}
+
+	WarpSystem::Core* Ship::getCore()
+	{
+		return (this->_core);
+	}
+  
+};
